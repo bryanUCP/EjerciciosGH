@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Demo Condicionales
+
+on:
+  push:
+
+permissions: 
+  contents: read
+
+jobs:
+
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Siempre se ejecuta
+        run: echo "Step 1 ok"
+
+      - name: "Step 2 - Forza un fallo (simulado)"
+        run: exit 1
+
+      - name: "Step 3 - Solo si todo es Ok (se va a saltar)"
+        if: success()
+        run: echo "Este step no se ejecutara porque el step anterior fallo"
+
+      - name: "Step 4 - Solo si hubo fallo (Si se ejecuta)"
+        if: failure()
+        run: echo "Fallo detectado - Aqui iria una notificacion"
+
+      - name: "Step 5 - Siempre corre (Cleanup)"
+        if: always()
+        run: echo "Limpieza final, siempre se ejecuta"
+
+      - name: "Step 6 - Solo en rama main"
+        if: github.ref.name == 'main'
+        run: echo "Este step solo corre en main"
+
+        
